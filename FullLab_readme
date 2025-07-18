@@ -1,0 +1,74 @@
+Step 1: Installing the NFS Server    ---> NFS-Server
+
+Step 2: Install NFS client packages on K8s Nodes   ---> NFS-Server
+
+Step 3: Install and Configure NFS Client Provisioner  ---> helm-setup
+
+Step4: Configure Ingress Controller
+
+helm upgrade --install ingress-nginx ingress-nginx --repo https://kubernetes.github.io/ingress-nginx --namespace ingress-nginx --create-namespace
+
+helm list --all-namespaces
+
+kubectl get ingressclass
+
+kubectl get service -n ingress-nginx
+
+Step5: Create the Ingress Resources
+
+kubectl apply -f Full_ingress.yaml
+
+Step6: Install MetalLB
+
+Execute this command and change strictARP to true
+
+Edit strictARP: from false to true
+
+kubectl edit configmap -n kube-system kube-proxy
+
+installation apply this manifest
+
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.10/config/manifests/metallb-frr.yaml
+
+kubectl get pods -n metallb-system
+
+kubectl apply -f Full_metallb.yaml
+
+kubectl rollout restart deployment deployment controller -n metallb-system
+
+Step7: Applly Bellow on the Master node
+
+vim /etc/hosts
+
+todoapp.example.internal
+
+Step4: Deploy the secrts
+
+kubectl apply -f Full_Secrts.yaml
+
+Step5: Deploy the ConfigMaps
+
+kubectl apply -f Full_ConfigMap.yaml
+
+Step6: App Deployment
+
+kubectl apply -f Full_deplyment.yaml
+
+Step7: App Service Deployment
+
+Kubectl apply -f Full_service.yaml
+
+Step8: Create ConfigMap for SQL database tables Creation
+
+kubectl create configmap mysql-init-config --from-file=init.sql
+
+Step9: Apply PVC for DB
+kubectl apply -f Full_todo-app-pvc.yaml
+
+Step3: DB Deployment
+
+kubectl apply -f Full_deplyment_db.yaml
+
+Step4: App Service Deployment
+
+Kubectl apply -f Full_service_db.yaml

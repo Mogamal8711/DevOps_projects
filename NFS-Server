@@ -1,0 +1,14 @@
+sudo apt update
+sudo apt install nfs-kernel-server
+sudo mkdir -p /srv/nfs/share
+sudo chown nobody:nogroup /srv/nfs/share
+sudo chmod 2770 /srv/nfs/share
+sudo nano /etc/exports
+/srv/nfs/share    *(rw,sync,no_subtree_check,no_root_squash)
+sudo systemctl restart nfs-kernel-server
+showmount -e localhost
+
+
+#### Install NFS client packages on K8s Nodes  #####
+sudo apt update
+sudo apt install nfs-common -y

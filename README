@@ -1,0 +1,29 @@
+Step 1: Installing the NFS Server    ---> NFS-Server
+
+Step 2: Install NFS client packages on K8s Nodes   ---> NFS-Server
+
+Step 3: Install and Configure NFS Client Provisioner  ---> helm-setup
+
+Step 4: Dynamic PVC Volume Create Testing:
+
+kubectl apply -f nfs-pvc.yaml
+kubectl apply -f nfs-deployment.yaml
+kubectl apply -f nfs-svc.yaml
+kubectl get po
+kubectl exec -it nfs-nginx-66bcd8b957-7vl2g bash
+#now we are into pod
+# cd /usr/share/nginx/html
+# ls -l
+# echo "hello world" >index.html
+# ls -l
+# exit
+
+##### On the NFS Server ########
+cd /srv/nfs/share
+ls -l
+cd default-nfs-pvc-pvc-8a531138-1a09-4e7e-a963-fbec5ecd0a41/
+
+########### CleanUp ##############
+kubectl apply -f nfs-deployment.yaml
+kubectl apply -f nfs-svc.yaml
+kubectl apply -f nfs-pvc.yaml

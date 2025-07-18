@@ -1,0 +1,24 @@
+######## Install Helm #################
+
+curl https://baltocdn.com/helm/signing.asc | sudo apt-key add -
+sudo apt-get install apt-transport-https --yes
+echo "deb https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+sudo apt-get update
+sudo apt-get install helm
+
+
+################ Install NFS provisioner using Helm ###########################
+
+helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
+
+helm install nfs-subdir-external-provisioner \
+nfs-subdir-external-provisioner/nfs-subdir-external-provisioner \
+--set nfs.server=10.124.0.9 \
+--set nfs.path=/data/nfs \
+--set storageClass.onDelete=true
+
+
+
+# Check pods and storage classes:
+kubectl get pod
+kubectl get sc
